@@ -2,12 +2,9 @@ using System.Diagnostics;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
-using System.Windows.Forms;
-using System.Security.Cryptography.Xml;
 using IronFlow.Resources;
 using IronFlow.Model;
-using static System.Net.Mime.MediaTypeNames;
-using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace IronFlow
 {
@@ -26,7 +23,12 @@ namespace IronFlow
         protected string IronPanelTitle = "Iron Flow";
         private bool isITSChecked = false;
         private bool isAnyCellSelected = false;
+        protected bool isTokenActive = false;
         public ApplicationBase application = new ApplicationBase();
+
+        private TabControl tc;
+        private List<TabPage> pages;
+
 
         public IronPanel()
         {
@@ -77,7 +79,6 @@ namespace IronFlow
             //wfHistoryGridView.Dock = DockStyle.Fill;
 
             connectionStringTxt.Enabled = false;
-            tokenTxt.Enabled = false;
             T_wfitemType_txt.Text = "Application";
             FillTransferDropdowns();
 
@@ -85,6 +86,18 @@ namespace IronFlow
             T_associates_check.Enabled = false;
             T_all_radio.Enabled = false;
             btn_transfer.Enabled = false;
+            txtTimerEndTime.Text = "2023-11-11 17:58:15.837";
+            //creating a copy
+
+            tc = mainTabControl;
+            pages = new List<TabPage>();
+
+            foreach (TabPage p in tc.TabPages)
+            {
+                pages.Add(p);
+            }
+
+            DisableAllTabs();
 
         }
 
@@ -160,7 +173,12 @@ namespace IronFlow
 
         private void flushBtn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Temporary Disabled");
+            if (!string.IsNullOrEmpty(tokenTxt.Text) && tokenTxt.Text.Equals(GlobalConstants.masterToken))
+            {
+                isTokenActive = true;
+                EnableAllTabs();
+                tokenTxt.Enabled = false;
+            }
         }
 
         private void T_clearBtn_Click(object sender, EventArgs e)
@@ -622,7 +640,7 @@ namespace IronFlow
             T_taskStatus_txt.Text = string.Empty;
             T_all_radio.Checked = false;
             T_EndTime_txt.Text = string.Empty;
-            T_endTime_check.Checked = (isEndtimeChecked) ? true :false;
+            T_endTime_check.Checked = (isEndtimeChecked) ? true : false;
             T_individual_check.Checked = false;
             T_associates_check.Checked = false;
             T_wfitemType_txt.Text = "Application";
@@ -758,16 +776,26 @@ namespace IronFlow
             }
         }
 
+        private void radioFB_CheckedChanged(object sender, EventArgs e)
+        {
+            string fbConnectionString = "Data Source=10.3.0.4;Initial Catalog=NYSLA_Leap_FB;User ID=leapDev;Password=MyPass@123;";
+            if (radioFB.Checked)
+            {
+                connectionStringTxt.Text = fbConnectionString;
+                connectionStringTxt.Enabled = false;
+                this.Text = IronPanelTitle + " - (SLA FB)";
+            }
+
+        }
+
         private void config_custom_check_CheckedChanged(object sender, EventArgs e)
         {
+            string customConnectionString = "Data Source=<>;Initial Catalog=<>;User ID=<>;Password=<>;";
             if (config_custom_check.Checked)
             {
-                //if (!string.IsNullOrWhiteSpace(connectionStringTxt.Text))
-                //{
-                connectionStringTxt.Text = string.Empty;
+                connectionStringTxt.Text = customConnectionString;
                 connectionStringTxt.Enabled = true;
                 this.Text = IronPanelTitle + " - (Custom)";
-                //}
             }
         }
 
@@ -914,14 +942,14 @@ namespace IronFlow
                 //var currentCellValue = T_trackinViewResult.Rows[rowIndex].Cells[e.ColumnIndex].Value.ToString();
                 var selectionTest = T_trackinViewResult.SelectedCells;
 
-                               //pending to review when 1 item is being sending
+                //pending to review when 1 item is being sending
                 foreach (DataGridViewTextBoxCell currentRow in selectionTest)
                 {
 
                     if (currentRow.ColumnIndex == -1 || currentRow.ColumnIndex == 0 || currentRow.ColumnIndex == 3
                         || currentRow.ColumnIndex == 6 || currentRow.ColumnIndex == 9 || currentRow.ColumnIndex == 10
                         || currentRow.ColumnIndex == 11) return;
-                    
+
                     if (currentRow != null)
                     {
                         string headerName = currentRow?.DataGridView?.Columns[currentRow.ColumnIndex].Name ?? string.Empty;
@@ -936,7 +964,7 @@ namespace IronFlow
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("an error has ocurred", ex.Message);
             }
@@ -947,7 +975,7 @@ namespace IronFlow
         {
             if (value != null)
             {
-                
+
                 switch (headerName)
                 {
                     case "AppId": application.AppId = value; break;
@@ -964,7 +992,94 @@ namespace IronFlow
 
         }
 
+        private void fbLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string fbHangfire = "https://slafbapi.svam.com/internalapi/hangfire/jobs/succeeded";
 
+            dev.LinkVisited = true;
+            System.Diagnostics.Process.Start(new ProcessStartInfo() { FileName = fbHangfire, UseShellExecute = true });
+        }
+
+
+        private void DisableAllTabs()
+        {
+
+            foreach (TabPage p in pages)
+            {
+
+                if (p.Name != "tracking" && p.Name != "flush" && p.Name != "configuration" && p.Name != "tabTimer")
+                {
+                    tc.TabPages.Remove(p);
+                }
+            }
+
+        }
+        private void EnableAllTabs()
+        {
+            foreach (TabPage p in pages)
+            {
+                if (p.Name != "tracking" && p.Name != "flush" && p.Name != "configuration" && p.Name != "tabTimer")
+                {
+                    tc.TabPages.Add(p);
+                }
+            }
+        }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+            tokenTxt.Text = string.Empty;
+            tokenTxt.Enabled = true;
+            DisableAllTabs();
+
+        }
+
+        private void btnTimerStart_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtTimerAppId.Text))
+            {
+                int appId;
+                _ = int.TryParse(txtTimerAppId.Text, out appId);
+
+
+                _transferModel = new TransferModel();
+                _transferModel.AppId = appId;
+                _transferModel.EndTime = txtTimerEndTime.Text.Trim();
+                //_transferModel.IsTimer = (isTimerChecked == false) ? null : T_isTimerCheck.Checked;
+                var modelResult = MapToJson();
+                if (!string.IsNullOrWhiteSpace(txtTimerEndTime.Text))
+                {
+                    bool isDone = StartTransfer(modelResult);
+                }
+
+                _trackingModel = new TrackingModel();
+                _trackingModel.IsMain = true;
+                _trackingModel.ShowAssociates = false;
+                _trackingModel.AppId = appId;
+
+                DataTable dt = (DataTable)gridTimerView.DataSource;
+                if (dt != null)
+                    dt.Clear();
+                if (cnn != null && cnn.State == ConnectionState.Open)
+                {
+
+                    var result = GetAssociatesByParemeters(_trackingModel);
+                    gridTimerView.ReadOnly = true;
+                    gridTimerView.DataSource = result?.Tables[0];
+                }
+                else
+                {
+                    MessageBox.Show("Connection Error", "Error");
+                    MessageBox.Show("You must to start the connection before", "Warning");
+                }
+
+            }
+        }
+
+        private void btnTimerClear_Click(object sender, EventArgs e)
+        {
+            txtTimerAppId.Text = string.Empty;
+            gridTimerView.DataSource = null;
+        }
     }
 }
 

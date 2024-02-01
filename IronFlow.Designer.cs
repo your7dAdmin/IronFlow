@@ -102,19 +102,18 @@
             queryResultGridView = new DataGridView();
             querySource = new RichTextBox();
             flush = new TabPage();
-            wfCacheTxt = new TextBox();
-            label29 = new Label();
-            cacheTxt = new TextBox();
-            label28 = new Label();
+            btnLogOut = new Button();
+            fbLabel = new LinkLabel();
             localHangfire = new LinkLabel();
             qaHang = new LinkLabel();
             devPerformance = new LinkLabel();
             label3 = new Label();
             dev = new LinkLabel();
-            flushBtn = new Button();
+            startBtn = new Button();
             tokenTxt = new TextBox();
             label2 = new Label();
             configuration = new TabPage();
+            radioFB = new RadioButton();
             checkITS = new CheckBox();
             config_custom_check = new RadioButton();
             config_local_check = new RadioButton();
@@ -126,6 +125,15 @@
             connectBtn = new Button();
             connectionStringTxt = new TextBox();
             label1 = new Label();
+            tabTimer = new TabPage();
+            btnTimerClear = new Button();
+            gridTimerView = new DataGridView();
+            label31 = new Label();
+            btnTimerStart = new Button();
+            txtTimerEndTime = new TextBox();
+            label32 = new Label();
+            txtTimerAppId = new TextBox();
+            label30 = new Label();
             mainTabControl.SuspendLayout();
             tracking.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)T_trackinViewResult).BeginInit();
@@ -142,6 +150,8 @@
             ((System.ComponentModel.ISupportInitialize)queryResultGridView).BeginInit();
             flush.SuspendLayout();
             configuration.SuspendLayout();
+            tabTimer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gridTimerView).BeginInit();
             SuspendLayout();
             // 
             // mainTabControl
@@ -153,6 +163,7 @@
             mainTabControl.Controls.Add(queryTab);
             mainTabControl.Controls.Add(flush);
             mainTabControl.Controls.Add(configuration);
+            mainTabControl.Controls.Add(tabTimer);
             mainTabControl.Dock = DockStyle.Fill;
             mainTabControl.Location = new Point(0, 0);
             mainTabControl.Name = "mainTabControl";
@@ -933,16 +944,14 @@
             // 
             // flush
             // 
-            flush.Controls.Add(wfCacheTxt);
-            flush.Controls.Add(label29);
-            flush.Controls.Add(cacheTxt);
-            flush.Controls.Add(label28);
+            flush.Controls.Add(btnLogOut);
+            flush.Controls.Add(fbLabel);
             flush.Controls.Add(localHangfire);
             flush.Controls.Add(qaHang);
             flush.Controls.Add(devPerformance);
             flush.Controls.Add(label3);
             flush.Controls.Add(dev);
-            flush.Controls.Add(flushBtn);
+            flush.Controls.Add(startBtn);
             flush.Controls.Add(tokenTxt);
             flush.Controls.Add(label2);
             flush.Location = new Point(4, 24);
@@ -953,42 +962,32 @@
             flush.ToolTipText = "Get the respective hangfire url or flush the application";
             flush.UseVisualStyleBackColor = true;
             // 
-            // wfCacheTxt
+            // btnLogOut
             // 
-            wfCacheTxt.Location = new Point(102, 125);
-            wfCacheTxt.Name = "wfCacheTxt";
-            wfCacheTxt.Size = new Size(608, 23);
-            wfCacheTxt.TabIndex = 11;
+            btnLogOut.Location = new Point(635, 78);
+            btnLogOut.Name = "btnLogOut";
+            btnLogOut.Size = new Size(75, 23);
+            btnLogOut.TabIndex = 9;
+            btnLogOut.Text = "Log Out";
+            btnLogOut.UseVisualStyleBackColor = true;
+            btnLogOut.Click += btnLogOut_Click;
             // 
-            // label29
+            // fbLabel
             // 
-            label29.AutoSize = true;
-            label29.Location = new Point(23, 128);
-            label29.Name = "label29";
-            label29.Size = new Size(60, 15);
-            label29.TabIndex = 10;
-            label29.Text = "WF Cache";
-            // 
-            // cacheTxt
-            // 
-            cacheTxt.Location = new Point(102, 82);
-            cacheTxt.Name = "cacheTxt";
-            cacheTxt.Size = new Size(608, 23);
-            cacheTxt.TabIndex = 9;
-            // 
-            // label28
-            // 
-            label28.AutoSize = true;
-            label28.Location = new Point(23, 85);
-            label28.Name = "label28";
-            label28.Size = new Size(49, 15);
-            label28.TabIndex = 8;
-            label28.Text = "Cache : ";
+            fbLabel.AutoSize = true;
+            fbLabel.Cursor = Cursors.Hand;
+            fbLabel.Location = new Point(29, 291);
+            fbLabel.Name = "fbLabel";
+            fbLabel.Size = new Size(20, 15);
+            fbLabel.TabIndex = 8;
+            fbLabel.TabStop = true;
+            fbLabel.Text = "FB";
+            fbLabel.LinkClicked += fbLabel_LinkClicked;
             // 
             // localHangfire
             // 
             localHangfire.AutoSize = true;
-            localHangfire.Location = new Point(29, 256);
+            localHangfire.Location = new Point(29, 156);
             localHangfire.Margin = new Padding(2, 0, 2, 0);
             localHangfire.Name = "localHangfire";
             localHangfire.Size = new Size(35, 15);
@@ -1001,7 +1000,7 @@
             // 
             qaHang.AutoSize = true;
             qaHang.Cursor = Cursors.Hand;
-            qaHang.Location = new Point(29, 355);
+            qaHang.Location = new Point(29, 255);
             qaHang.Name = "qaHang";
             qaHang.Size = new Size(24, 15);
             qaHang.TabIndex = 6;
@@ -1013,7 +1012,7 @@
             // 
             devPerformance.AutoSize = true;
             devPerformance.Cursor = Cursors.Hand;
-            devPerformance.Location = new Point(29, 286);
+            devPerformance.Location = new Point(29, 189);
             devPerformance.Name = "devPerformance";
             devPerformance.Size = new Size(98, 15);
             devPerformance.TabIndex = 5;
@@ -1024,7 +1023,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(26, 229);
+            label3.Location = new Point(29, 114);
             label3.Name = "label3";
             label3.Size = new Size(84, 15);
             label3.TabIndex = 4;
@@ -1034,7 +1033,7 @@
             // 
             dev.AutoSize = true;
             dev.Cursor = Cursors.Hand;
-            dev.Location = new Point(29, 319);
+            dev.Location = new Point(29, 222);
             dev.Name = "dev";
             dev.Size = new Size(27, 15);
             dev.TabIndex = 3;
@@ -1043,15 +1042,15 @@
             dev.Text = "Dev";
             dev.LinkClicked += dev_LinkClicked;
             // 
-            // flushBtn
+            // startBtn
             // 
-            flushBtn.Location = new Point(634, 188);
-            flushBtn.Name = "flushBtn";
-            flushBtn.Size = new Size(75, 23);
-            flushBtn.TabIndex = 2;
-            flushBtn.Text = "Flush";
-            flushBtn.UseVisualStyleBackColor = true;
-            flushBtn.Click += flushBtn_Click;
+            startBtn.Location = new Point(534, 78);
+            startBtn.Name = "startBtn";
+            startBtn.Size = new Size(75, 23);
+            startBtn.TabIndex = 2;
+            startBtn.Text = "Submit";
+            startBtn.UseVisualStyleBackColor = true;
+            startBtn.Click += flushBtn_Click;
             // 
             // tokenTxt
             // 
@@ -1071,6 +1070,7 @@
             // 
             // configuration
             // 
+            configuration.Controls.Add(radioFB);
             configuration.Controls.Add(checkITS);
             configuration.Controls.Add(config_custom_check);
             configuration.Controls.Add(config_local_check);
@@ -1089,6 +1089,19 @@
             configuration.Text = "Configuration";
             configuration.ToolTipText = "Set the initial configuration";
             configuration.UseVisualStyleBackColor = true;
+            // 
+            // radioFB
+            // 
+            radioFB.AutoSize = true;
+            radioFB.Location = new Point(407, 250);
+            radioFB.Margin = new Padding(2);
+            radioFB.Name = "radioFB";
+            radioFB.Size = new Size(62, 19);
+            radioFB.TabIndex = 11;
+            radioFB.TabStop = true;
+            radioFB.Text = "Sla Fb  ";
+            radioFB.UseVisualStyleBackColor = true;
+            radioFB.CheckedChanged += radioFB_CheckedChanged;
             // 
             // checkITS
             // 
@@ -1208,6 +1221,99 @@
             label1.TabIndex = 0;
             label1.Text = "Connection String:";
             // 
+            // tabTimer
+            // 
+            tabTimer.Controls.Add(btnTimerClear);
+            tabTimer.Controls.Add(gridTimerView);
+            tabTimer.Controls.Add(label31);
+            tabTimer.Controls.Add(btnTimerStart);
+            tabTimer.Controls.Add(txtTimerEndTime);
+            tabTimer.Controls.Add(label32);
+            tabTimer.Controls.Add(txtTimerAppId);
+            tabTimer.Controls.Add(label30);
+            tabTimer.Location = new Point(4, 24);
+            tabTimer.Name = "tabTimer";
+            tabTimer.Padding = new Padding(3);
+            tabTimer.Size = new Size(814, 424);
+            tabTimer.TabIndex = 7;
+            tabTimer.Text = "Timer";
+            tabTimer.UseVisualStyleBackColor = true;
+            // 
+            // btnTimerClear
+            // 
+            btnTimerClear.Location = new Point(395, 136);
+            btnTimerClear.Name = "btnTimerClear";
+            btnTimerClear.Size = new Size(75, 23);
+            btnTimerClear.TabIndex = 30;
+            btnTimerClear.Text = "Clear";
+            btnTimerClear.UseVisualStyleBackColor = true;
+            btnTimerClear.Click += btnTimerClear_Click;
+            // 
+            // gridTimerView
+            // 
+            gridTimerView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            gridTimerView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            gridTimerView.Location = new Point(22, 203);
+            gridTimerView.Name = "gridTimerView";
+            gridTimerView.RowHeadersWidth = 62;
+            gridTimerView.RowTemplate.Height = 25;
+            gridTimerView.Size = new Size(580, 186);
+            gridTimerView.TabIndex = 29;
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Location = new Point(22, 162);
+            label31.Name = "label31";
+            label31.Size = new Size(149, 15);
+            label31.TabIndex = 28;
+            label31.Text = "Note: use the string format";
+            // 
+            // btnTimerStart
+            // 
+            btnTimerStart.Location = new Point(289, 135);
+            btnTimerStart.Name = "btnTimerStart";
+            btnTimerStart.Size = new Size(75, 23);
+            btnTimerStart.TabIndex = 27;
+            btnTimerStart.Text = "Start";
+            btnTimerStart.UseVisualStyleBackColor = true;
+            btnTimerStart.Click += btnTimerStart_Click;
+            // 
+            // txtTimerEndTime
+            // 
+            txtTimerEndTime.Location = new Point(22, 136);
+            txtTimerEndTime.Name = "txtTimerEndTime";
+            txtTimerEndTime.PlaceholderText = "Example: 2023-03-05 08:50:19.803";
+            txtTimerEndTime.Size = new Size(227, 23);
+            txtTimerEndTime.TabIndex = 26;
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label32.Location = new Point(22, 95);
+            label32.Name = "label32";
+            label32.Size = new Size(64, 15);
+            label32.TabIndex = 25;
+            label32.Text = "End Time :";
+            // 
+            // txtTimerAppId
+            // 
+            txtTimerAppId.Location = new Point(22, 57);
+            txtTimerAppId.Name = "txtTimerAppId";
+            txtTimerAppId.Size = new Size(100, 23);
+            txtTimerAppId.TabIndex = 11;
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label30.Location = new Point(22, 21);
+            label30.Name = "label30";
+            label30.Size = new Size(46, 15);
+            label30.TabIndex = 10;
+            label30.Text = "AppId :";
+            // 
             // IronPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1241,6 +1347,9 @@
             flush.PerformLayout();
             configuration.ResumeLayout(false);
             configuration.PerformLayout();
+            tabTimer.ResumeLayout(false);
+            tabTimer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)gridTimerView).EndInit();
             ResumeLayout(false);
         }
 
@@ -1254,7 +1363,7 @@
         private Button connectBtn;
         private TextBox connectionStringTxt;
         private Label Configstatus;
-        private Button flushBtn;
+        private Button startBtn;
         private TextBox tokenTxt;
         private Label label2;
         private Label label3;
@@ -1336,11 +1445,19 @@
         private DataGridView queryResultGridView;
         private RichTextBox querySource;
         private Label label27;
-        private TextBox wfCacheTxt;
-        private Label label29;
-        private TextBox cacheTxt;
-        private Label label28;
         private CheckBox checkITS;
         private Button btn_transfer;
+        private RadioButton radioFB;
+        private TabPage tabTimer;
+        private TextBox txtTimerAppId;
+        private Label label30;
+        private Label label31;
+        private Button btnTimerStart;
+        private TextBox txtTimerEndTime;
+        private Label label32;
+        private DataGridView gridTimerView;
+        private Button btnTimerClear;
+        private LinkLabel fbLabel;
+        private Button btnLogOut;
     }
 }
