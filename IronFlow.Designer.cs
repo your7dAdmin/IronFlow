@@ -134,6 +134,8 @@
             label32 = new Label();
             txtTimerAppId = new TextBox();
             label30 = new Label();
+            timerWfTypeTxt = new TextBox();
+            label28 = new Label();
             mainTabControl.SuspendLayout();
             tracking.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)T_trackinViewResult).BeginInit();
@@ -1223,6 +1225,8 @@
             // 
             // tabTimer
             // 
+            tabTimer.Controls.Add(timerWfTypeTxt);
+            tabTimer.Controls.Add(label28);
             tabTimer.Controls.Add(btnTimerClear);
             tabTimer.Controls.Add(gridTimerView);
             tabTimer.Controls.Add(label31);
@@ -1313,6 +1317,23 @@
             label30.Size = new Size(46, 15);
             label30.TabIndex = 10;
             label30.Text = "AppId :";
+            // 
+            // timerWfTypeTxt
+            // 
+            timerWfTypeTxt.Location = new Point(176, 57);
+            timerWfTypeTxt.Name = "timerWfTypeTxt";
+            timerWfTypeTxt.Size = new Size(125, 23);
+            timerWfTypeTxt.TabIndex = 32;
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label28.Location = new Point(176, 21);
+            label28.Name = "label28";
+            label28.Size = new Size(128, 15);
+            label28.TabIndex = 31;
+            label28.Text = "Workflow Item Type: ";
             // 
             // IronPanel
             // 
@@ -1459,5 +1480,7 @@
         private Button btnTimerClear;
         private LinkLabel fbLabel;
         private Button btnLogOut;
+        private TextBox timerWfTypeTxt;
+        private Label label28;
     }
 }

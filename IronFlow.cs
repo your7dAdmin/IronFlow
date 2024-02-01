@@ -86,6 +86,7 @@ namespace IronFlow
             T_associates_check.Enabled = false;
             T_all_radio.Enabled = false;
             btn_transfer.Enabled = false;
+            timerWfTypeTxt.Text = "Application";
             txtTimerEndTime.Text = "2023-11-11 17:58:15.837";
             //creating a copy
 
@@ -1027,9 +1028,13 @@ namespace IronFlow
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-            tokenTxt.Text = string.Empty;
-            tokenTxt.Enabled = true;
-            DisableAllTabs();
+            if (isTokenActive)
+            {
+                tokenTxt.Text = string.Empty;
+                tokenTxt.Enabled = true;
+                DisableAllTabs();
+                isTokenActive = false;
+            }
 
         }
 
@@ -1043,12 +1048,19 @@ namespace IronFlow
 
                 _transferModel = new TransferModel();
                 _transferModel.AppId = appId;
+                _transferModel.WorkflowItemType = timerWfTypeTxt.Text.Trim();
+                _transferModel.Isindividual = true;
                 _transferModel.EndTime = txtTimerEndTime.Text.Trim();
-                //_transferModel.IsTimer = (isTimerChecked == false) ? null : T_isTimerCheck.Checked;
+                _transferModel.IsTimer = null;
+                _transferModel.isOnlyEndTime = true;
+                _transferModel.AppStatusId = 0;
+
                 var modelResult = MapToJson();
                 if (!string.IsNullOrWhiteSpace(txtTimerEndTime.Text))
                 {
                     bool isDone = StartTransfer(modelResult);
+                    if (isDone)
+                        MessageBox.Show("Success!");
                 }
 
                 _trackingModel = new TrackingModel();
