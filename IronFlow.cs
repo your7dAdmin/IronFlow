@@ -79,6 +79,8 @@ namespace IronFlow
             //wfHistoryGridView.Dock = DockStyle.Fill;
 
             connectionStringTxt.Enabled = false;
+            connectionStringTxt.PasswordChar = '*';
+
             T_wfitemType_txt.Text = "Application";
             FillTransferDropdowns();
 
@@ -176,9 +178,14 @@ namespace IronFlow
         {
             if (!string.IsNullOrEmpty(tokenTxt.Text) && tokenTxt.Text.Equals(GlobalConstants.masterToken))
             {
+                tokenTxt.PasswordChar = '*';
                 isTokenActive = true;
                 EnableAllTabs();
                 tokenTxt.Enabled = false;
+            }
+            else
+            {
+                tokenTxt.PasswordChar = '\0';
             }
         }
 
@@ -749,6 +756,7 @@ namespace IronFlow
             string devConnectionString = "Data Source= 10.3.0.4;Initial Catalog=NYSLA_Leap_DevIntegration;User ID=leapDev;Password=MyPass@123;";
             if (config_dev_check.Checked)
             {
+                connectionStringTxt.PasswordChar = (isTokenActive) ? '\0' : '*';
                 connectionStringTxt.Text = (isITSChecked == true) ? GlobalConstants.ITSDev : devConnectionString;
                 connectionStringTxt.Enabled = false;
                 this.Text = IronPanelTitle + " - (Dev)";
@@ -760,6 +768,7 @@ namespace IronFlow
             string localConnectionString = "Data Source= 10.3.0.4;Initial Catalog=NYSLA_Leap_New;User ID=leapDev;Password=MyPass@123;";
             if (config_local_check.Checked)
             {
+                connectionStringTxt.PasswordChar = (isTokenActive) ? '\0' : '*';
                 connectionStringTxt.Text = localConnectionString;
                 connectionStringTxt.Enabled = false;
                 this.Text = IronPanelTitle + " - (Dev Performance / Local)";
@@ -771,6 +780,7 @@ namespace IronFlow
             string qaConnectionString = "Data Source=10.3.0.5;Initial Catalog=NYSLA_Leap_QA;User ID=sladbadmin;Password=P#@sswin22;";
             if (config_qa_check.Checked)
             {
+                connectionStringTxt.PasswordChar = (isTokenActive) ? '\0' : '*';
                 connectionStringTxt.Text = (isITSChecked == true) ? GlobalConstants.ITSQA : qaConnectionString;
                 connectionStringTxt.Enabled = false;
                 this.Text = IronPanelTitle + " - (QA)";
@@ -782,6 +792,7 @@ namespace IronFlow
             string fbConnectionString = "Data Source=10.3.0.4;Initial Catalog=NYSLA_Leap_FB;User ID=leapDev;Password=MyPass@123;";
             if (radioFB.Checked)
             {
+                connectionStringTxt.PasswordChar = (isTokenActive) ? '\0' : '*';
                 connectionStringTxt.Text = fbConnectionString;
                 connectionStringTxt.Enabled = false;
                 this.Text = IronPanelTitle + " - (SLA FB)";
@@ -794,6 +805,7 @@ namespace IronFlow
             string customConnectionString = "Data Source=<>;Initial Catalog=<>;User ID=<>;Password=<>;";
             if (config_custom_check.Checked)
             {
+                connectionStringTxt.PasswordChar = '\0';
                 connectionStringTxt.Text = customConnectionString;
                 connectionStringTxt.Enabled = true;
                 this.Text = IronPanelTitle + " - (Custom)";
