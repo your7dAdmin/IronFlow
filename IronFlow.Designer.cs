@@ -113,6 +113,7 @@
             tokenTxt = new TextBox();
             label2 = new Label();
             configuration = new TabPage();
+            qaZcaler = new RadioButton();
             radioFB = new RadioButton();
             checkITS = new CheckBox();
             config_custom_check = new RadioButton();
@@ -126,6 +127,8 @@
             connectionStringTxt = new TextBox();
             label1 = new Label();
             tabTimer = new TabPage();
+            timerWfTypeTxt = new TextBox();
+            label28 = new Label();
             btnTimerClear = new Button();
             gridTimerView = new DataGridView();
             label31 = new Label();
@@ -134,8 +137,6 @@
             label32 = new Label();
             txtTimerAppId = new TextBox();
             label30 = new Label();
-            timerWfTypeTxt = new TextBox();
-            label28 = new Label();
             mainTabControl.SuspendLayout();
             tracking.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)T_trackinViewResult).BeginInit();
@@ -1072,6 +1073,7 @@
             // 
             // configuration
             // 
+            configuration.Controls.Add(qaZcaler);
             configuration.Controls.Add(radioFB);
             configuration.Controls.Add(checkITS);
             configuration.Controls.Add(config_custom_check);
@@ -1091,6 +1093,19 @@
             configuration.Text = "Configuration";
             configuration.ToolTipText = "Set the initial configuration";
             configuration.UseVisualStyleBackColor = true;
+            // 
+            // qaZcaler
+            // 
+            qaZcaler.AutoSize = true;
+            qaZcaler.Location = new Point(575, 208);
+            qaZcaler.Margin = new Padding(2);
+            qaZcaler.Name = "qaZcaler";
+            qaZcaler.Size = new Size(93, 19);
+            qaZcaler.TabIndex = 12;
+            qaZcaler.TabStop = true;
+            qaZcaler.Text = "QA - (Zcaler)";
+            qaZcaler.UseVisualStyleBackColor = true;
+            qaZcaler.CheckedChanged += qaZcaler_CheckedChanged;
             // 
             // radioFB
             // 
@@ -1119,7 +1134,7 @@
             // config_custom_check
             // 
             config_custom_check.AutoSize = true;
-            config_custom_check.Location = new Point(575, 208);
+            config_custom_check.Location = new Point(575, 250);
             config_custom_check.Margin = new Padding(2);
             config_custom_check.Name = "config_custom_check";
             config_custom_check.Size = new Size(67, 19);
@@ -1243,6 +1258,23 @@
             tabTimer.Text = "Timer";
             tabTimer.UseVisualStyleBackColor = true;
             // 
+            // timerWfTypeTxt
+            // 
+            timerWfTypeTxt.Location = new Point(176, 57);
+            timerWfTypeTxt.Name = "timerWfTypeTxt";
+            timerWfTypeTxt.Size = new Size(125, 23);
+            timerWfTypeTxt.TabIndex = 32;
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label28.Location = new Point(176, 21);
+            label28.Name = "label28";
+            label28.Size = new Size(128, 15);
+            label28.TabIndex = 31;
+            label28.Text = "Workflow Item Type: ";
+            // 
             // btnTimerClear
             // 
             btnTimerClear.Location = new Point(395, 136);
@@ -1317,23 +1349,6 @@
             label30.Size = new Size(46, 15);
             label30.TabIndex = 10;
             label30.Text = "AppId :";
-            // 
-            // timerWfTypeTxt
-            // 
-            timerWfTypeTxt.Location = new Point(176, 57);
-            timerWfTypeTxt.Name = "timerWfTypeTxt";
-            timerWfTypeTxt.Size = new Size(125, 23);
-            timerWfTypeTxt.TabIndex = 32;
-            // 
-            // label28
-            // 
-            label28.AutoSize = true;
-            label28.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label28.Location = new Point(176, 21);
-            label28.Name = "label28";
-            label28.Size = new Size(128, 15);
-            label28.TabIndex = 31;
-            label28.Text = "Workflow Item Type: ";
             // 
             // IronPanel
             // 
@@ -1482,5 +1497,6 @@
         private Button btnLogOut;
         private TextBox timerWfTypeTxt;
         private Label label28;
+        private RadioButton qaZcaler;
     }
 }

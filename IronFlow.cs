@@ -100,7 +100,7 @@ namespace IronFlow
                 pages.Add(p);
             }
 
-            DisableAllTabs();
+            //DisableAllTabs();
 
         }
 
@@ -176,6 +176,8 @@ namespace IronFlow
 
         private void flushBtn_Click(object sender, EventArgs e)
         {
+
+            //commented out, just for releasing to me as admin
             if (!string.IsNullOrEmpty(tokenTxt.Text) && tokenTxt.Text.Equals(GlobalConstants.masterToken))
             {
                 tokenTxt.PasswordChar = '*';
@@ -933,6 +935,14 @@ namespace IronFlow
                 T_roleId.Text = application.RoleId;
                 T_EndTime_txt.Text = application.EndTime;
 
+                //assigning all appids
+                history_appId_txt.Text = application.AppId;
+                common_appId_txt.Text = application.AppId;
+                txtTimerAppId.Text = application.AppId;
+
+
+
+
                 T_roleId.SelectedItem = _utilities.SetItemValue(T_roleId.DataSource, application, GlobalConstants.RoleTypeId);
                 T_appstatus.SelectedItem = _utilities.SetItemValue(T_appstatus.DataSource, application, GlobalConstants.AppStatusTypeId);
 
@@ -1103,6 +1113,18 @@ namespace IronFlow
         {
             txtTimerAppId.Text = string.Empty;
             gridTimerView.DataSource = null;
+        }
+
+        private void qaZcaler_CheckedChanged(object sender, EventArgs e)
+        {
+            string qaConnectionString = "Data Source=10.11.0.12;Initial Catalog=NYSLA_Leap_QA;User ID=sladbadmin;Password=P#@sswin22;";
+            if (qaZcaler.Checked)
+            {
+                connectionStringTxt.PasswordChar = (isTokenActive) ? '\0' : '*';
+                connectionStringTxt.Text = (isITSChecked == true) ? GlobalConstants.ITSQA : qaConnectionString;
+                connectionStringTxt.Enabled = false;
+                this.Text = IronPanelTitle + " - (QA) - (Zcaler)";
+            }
         }
     }
 }

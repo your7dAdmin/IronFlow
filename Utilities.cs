@@ -56,7 +56,7 @@ namespace IronFlow
         {
             if (cnn != null && cnn.State == ConnectionState.Open)
             {
-                string getUsersQuery = $"SELECT \r\nUserId, UserName AS Email, CONCAT(FirstName, LastName) AS [Name],\r\nIIF(COUNT(A.AppId) > 0, 1, 0) AS IsExaminerAssigned,\r\nIIF(COUNT(L.AppId) > 0, 1, 0) AS IsLicBoardAssigned\r\nFROM [User] U\r\nLEFT JOIN AssignAppExaminer A ON U.UserId = A.ExaminerId\r\nLEFT JOIN AssignAppLicBoard L ON U.UserId = L.LicBoardId\r\nWHERE U.[UserName] IS NOT NULL AND U.IsActive = 1 AND (A.AppId = {appId} OR L.AppId = {appId})\r\nGROUP BY U.UserId, U.UserName, U.FirstName, U.LastName;";
+                string getUsersQuery = $"SELECT \r\nUserId, UserName AS Email, CONCAT(FirstName, LastName) AS [Name],\r\nIIF(COUNT(A.AppId) > 0, 1, 0) AS IsExaminerAssigned,\r\nIIF(COUNT(L.AppId) > 0, 1, 0) AS IsLicBoardAssigned\r\nFROM [User] U\r\nLEFT JOIN AssignAppExaminer A ON U.UserId = A.ExaminerId AND A.AppId = {appId}\r\nLEFT JOIN AssignAppLicBoard L ON U.UserId = L.LicBoardId AND L.AppId = {appId}\r\nWHERE U.[UserName] IS NOT NULL AND U.IsActive = 1 AND (A.AppId = {appId} OR L.AppId = {appId})\r\nGROUP BY U.UserId, U.UserName, U.FirstName, U.LastName;";
                 SqlCommand cmd = new SqlCommand(getUsersQuery, cnn);
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
